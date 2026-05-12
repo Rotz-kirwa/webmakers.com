@@ -9,8 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as StartProjectRouteImport } from './routes/start-project'
+import { Route as DescribeYourIdeaRouteImport } from './routes/describe-your-idea'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as IndexRouteImport } from './routes/index'
 
+const StartProjectRoute = StartProjectRouteImport.update({
+  id: '/start-project',
+  path: '/start-project',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DescribeYourIdeaRoute = DescribeYourIdeaRouteImport.update({
+  id: '/describe-your-idea',
+  path: '/describe-your-idea',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +37,61 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/contact': typeof ContactRoute
+  '/describe-your-idea': typeof DescribeYourIdeaRoute
+  '/start-project': typeof StartProjectRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/contact': typeof ContactRoute
+  '/describe-your-idea': typeof DescribeYourIdeaRoute
+  '/start-project': typeof StartProjectRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/contact': typeof ContactRoute
+  '/describe-your-idea': typeof DescribeYourIdeaRoute
+  '/start-project': typeof StartProjectRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/contact' | '/describe-your-idea' | '/start-project'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/contact' | '/describe-your-idea' | '/start-project'
+  id: '__root__' | '/' | '/contact' | '/describe-your-idea' | '/start-project'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ContactRoute: typeof ContactRoute
+  DescribeYourIdeaRoute: typeof DescribeYourIdeaRoute
+  StartProjectRoute: typeof StartProjectRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/start-project': {
+      id: '/start-project'
+      path: '/start-project'
+      fullPath: '/start-project'
+      preLoaderRoute: typeof StartProjectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/describe-your-idea': {
+      id: '/describe-your-idea'
+      path: '/describe-your-idea'
+      fullPath: '/describe-your-idea'
+      preLoaderRoute: typeof DescribeYourIdeaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,7 +104,20 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ContactRoute: ContactRoute,
+  DescribeYourIdeaRoute: DescribeYourIdeaRoute,
+  StartProjectRoute: StartProjectRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

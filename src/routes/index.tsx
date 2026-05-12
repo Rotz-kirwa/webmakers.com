@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Header } from "@/components/site/Header";
 import { Hero } from "@/components/site/Hero";
 import { Categories } from "@/components/site/Categories";
-import { Showcase } from "@/components/site/Showcase";
 import { Packages } from "@/components/site/Packages";
 import { Addons } from "@/components/site/Addons";
 import { PromoBanner } from "@/components/site/PromoBanner";
@@ -22,7 +21,11 @@ export const Route = createFileRoute("/")({
           "WebMakers builds high-converting websites for restaurants, real estate, e-commerce, salons, clinics, schools and more. Premium design, fast delivery, affordable packages.",
       },
       { property: "og:title", content: "WebMakers — Premium Websites for Every Business" },
-      { property: "og:description", content: "Stunning, mobile-first websites that make your business look trustworthy and sell more." },
+      {
+        property: "og:description",
+        content:
+          "Stunning, mobile-first websites that make your business look trustworthy and sell more.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -50,7 +53,6 @@ function Index() {
           sub="A website makes your business visible 24/7 — even while you sleep."
           variant="navy"
         />
-        <Showcase />
         <Packages />
         <PromoBanner
           headline="Look professional. Get trusted. Sell more."

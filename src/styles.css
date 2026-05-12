@@ -43,7 +43,9 @@
 
   --shadow-soft: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px -8px rgba(15, 23, 42, 0.08);
   --shadow-card: 0 2px 4px rgba(15, 23, 42, 0.04), 0 20px 40px -20px rgba(15, 23, 42, 0.18);
-  --shadow-glow: 0 20px 60px -20px color-mix(in oklab, var(--royal) 45%, transparent);
+  --shadow-glow:
+    0 20px 60px -20px color-mix(in oklab, var(--royal) 45%, transparent),
+    0 18px 54px -28px color-mix(in oklab, var(--gold) 55%, transparent);
 }
 
 :root {
@@ -58,10 +60,10 @@
   --popover-foreground: oklch(0.21 0.05 260);
 
   /* Brand */
-  --navy: oklch(0.24 0.08 260);          /* deep navy */
-  --royal: oklch(0.52 0.21 262);         /* royal blue */
-  --sky: oklch(0.92 0.04 240);           /* soft sky */
-  --gold: oklch(0.79 0.16 75);           /* warm gold/orange */
+  --navy: oklch(0.2 0.07 260); /* deep navy */
+  --royal: #1d4ed8; /* agency blue */
+  --sky: #eaf1ff; /* soft blue */
+  --gold: #ef3525; /* signature red */
   --ink: oklch(0.18 0.04 260);
 
   --primary: var(--navy);
@@ -83,10 +85,20 @@
   --input: oklch(0.93 0.012 250);
   --ring: var(--royal);
 
-  --gradient-hero: radial-gradient(ellipse at top left, color-mix(in oklab, var(--sky) 80%, white) 0%, white 55%),
-                   linear-gradient(180deg, color-mix(in oklab, var(--sky) 35%, white), white 70%);
-  --gradient-royal: linear-gradient(135deg, var(--royal), color-mix(in oklab, var(--navy) 70%, var(--royal)));
-  --gradient-gold: linear-gradient(135deg, var(--gold), oklch(0.72 0.18 50));
+  --gradient-hero:
+    radial-gradient(ellipse at top left, color-mix(in oklab, var(--sky) 88%, white) 0%, white 54%),
+    radial-gradient(
+      ellipse at top right,
+      color-mix(in oklab, var(--gold) 10%, white) 0%,
+      transparent 42%
+    ),
+    linear-gradient(180deg, color-mix(in oklab, var(--sky) 42%, white), white 70%);
+  --gradient-royal: linear-gradient(
+    135deg,
+    var(--royal),
+    color-mix(in oklab, var(--navy) 72%, var(--royal))
+  );
+  --gradient-gold: linear-gradient(135deg, var(--gold), var(--royal));
 }
 
 .dark {
@@ -100,8 +112,12 @@
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; }
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
@@ -109,7 +125,10 @@
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
     letter-spacing: -0.02em;
     color: var(--color-navy);
@@ -117,48 +136,97 @@
 }
 
 @layer components {
-  .container-x { @apply mx-auto w-full max-w-7xl px-5 sm:px-8; }
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-5 sm:px-8;
+  }
 
   .eyebrow {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    padding: 0.35rem 0.85rem; border-radius: 999px;
-    background: color-mix(in oklab, var(--sky) 60%, white);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    background: linear-gradient(
+      135deg,
+      color-mix(in oklab, var(--royal) 10%, white),
+      color-mix(in oklab, var(--gold) 8%, white)
+    );
     color: var(--navy);
-    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     border: 1px solid color-mix(in oklab, var(--royal) 15%, white);
   }
 
   .btn-primary {
-    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-    padding: 0.85rem 1.4rem; border-radius: 0.75rem;
-    background: var(--gradient-royal); color: white; font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.4rem;
+    border-radius: 0.75rem;
+    background: var(--gradient-royal);
+    color: white;
+    font-weight: 600;
     box-shadow: var(--shadow-glow);
-    transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+    transition:
+      transform 0.25s ease,
+      box-shadow 0.25s ease,
+      filter 0.25s ease;
   }
-  .btn-primary:hover { transform: translateY(-2px); filter: brightness(1.05); }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+  }
 
   .btn-ghost {
-    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-    padding: 0.85rem 1.4rem; border-radius: 0.75rem;
-    background: white; color: var(--navy); font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.4rem;
+    border-radius: 0.75rem;
+    background: white;
+    color: var(--navy);
+    font-weight: 600;
     border: 1px solid var(--border);
-    transition: all .25s ease;
+    transition: all 0.25s ease;
   }
-  .btn-ghost:hover { border-color: var(--royal); color: var(--royal); transform: translateY(-2px); }
+  .btn-ghost:hover {
+    border-color: var(--royal);
+    color: var(--royal);
+    transform: translateY(-2px);
+  }
 
   .btn-gold {
-    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-    padding: 0.85rem 1.4rem; border-radius: 0.75rem;
-    background: var(--gradient-gold); color: var(--ink); font-weight: 700;
-    box-shadow: 0 12px 30px -12px color-mix(in oklab, var(--gold) 60%, transparent);
-    transition: transform .25s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.4rem;
+    border-radius: 0.75rem;
+    background: var(--gradient-gold);
+    color: white;
+    font-weight: 700;
+    box-shadow:
+      0 16px 36px -18px color-mix(in oklab, var(--gold) 70%, transparent),
+      0 16px 42px -24px color-mix(in oklab, var(--royal) 75%, transparent);
+    transition: transform 0.25s ease;
   }
-  .btn-gold:hover { transform: translateY(-2px); }
+  .btn-gold:hover {
+    transform: translateY(-2px);
+  }
 
   .card-elevated {
-    background: white; border: 1px solid var(--border); border-radius: 1.25rem;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 1.25rem;
     box-shadow: var(--shadow-soft);
-    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+    transition:
+      transform 0.3s ease,
+      box-shadow 0.3s ease,
+      border-color 0.3s ease;
   }
   .card-elevated:hover {
     transform: translateY(-4px);
@@ -168,26 +236,51 @@
 
   .gradient-text {
     background: var(--gradient-royal);
-    -webkit-background-clip: text; background-clip: text; color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   .grid-bg {
     background-image:
-      linear-gradient(to right, color-mix(in oklab, var(--royal) 8%, transparent) 1px, transparent 1px),
-      linear-gradient(to bottom, color-mix(in oklab, var(--royal) 8%, transparent) 1px, transparent 1px);
+      linear-gradient(
+        to right,
+        color-mix(in oklab, var(--royal) 8%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in oklab, var(--royal) 8%, transparent) 1px,
+        transparent 1px
+      );
     background-size: 48px 48px;
     mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%);
   }
 }
 
 @keyframes float-y {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
-.animate-float { animation: float-y 6s ease-in-out infinite; }
+.animate-float {
+  animation: float-y 6s ease-in-out infinite;
+}
 
 @keyframes fade-up {
-  from { opacity: 0; transform: translateY(16px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-.animate-fade-up { animation: fade-up .7s ease-out both; }
+.animate-fade-up {
+  animation: fade-up 0.7s ease-out both;
+}
