@@ -63,8 +63,7 @@ export function Hero() {
             <img key={image.alt} src={image.src} alt="" className="h-full w-full object-cover" />
           ))}
         </div>
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,17,31,0.94)_0%,rgba(7,17,31,0.74)_46%,rgba(7,17,31,0.32)_100%)]" />
-        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#07111f] to-transparent" />
+        <div className="absolute inset-0 bg-[rgba(7,17,31,0.72)]" />
       </div>
 
       <div className="container-x relative pb-16 pt-10 sm:pb-18 sm:pt-12 lg:pb-20 lg:pt-14">
