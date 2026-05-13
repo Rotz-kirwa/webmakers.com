@@ -5,6 +5,7 @@ import { Logo } from "./Logo";
 const links = [
   { href: "/", label: "Home" },
   { href: "/#categories", label: "Categories" },
+  { href: "/services", label: "Services" },
   { href: "/#packages", label: "Packages" },
   { href: "/#addons", label: "Add-ons" },
   { href: "/#process", label: "Process" },
@@ -20,7 +21,7 @@ export function Header() {
         <a href="/#top" aria-label="WebMakers home">
           <Logo />
         </a>
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-4 md:flex lg:gap-6 xl:gap-8">
           {links.map((l) => (
             <a
               key={l.href}

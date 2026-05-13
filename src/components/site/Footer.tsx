@@ -33,11 +33,15 @@ export function Footer() {
         <div>
           <h4 className="text-sm font-bold uppercase tracking-wider text-navy">Services</h4>
           <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-            <li>Web design</li>
+            <li>
+              <a href="/services" className="transition hover:text-navy">
+                Web design
+              </a>
+            </li>
             <li>E-commerce</li>
-            <li>Booking systems</li>
-            <li>SEO</li>
-            <li>Maintenance</li>
+            <li>AI automation</li>
+            <li>Business systems</li>
+            <li>Digital marketing</li>
           </ul>
         </div>
         <div>

@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as StartProjectRouteImport } from './routes/start-project'
+import { Route as ServicesRouteImport } from './routes/services'
 import { Route as DescribeYourIdeaRouteImport } from './routes/describe-your-idea'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as IndexRouteImport } from './routes/index'
@@ -18,6 +19,11 @@ import { Route as AdminIndexRouteImport } from './routes/admin/index'
 const StartProjectRoute = StartProjectRouteImport.update({
   id: '/start-project',
   path: '/start-project',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DescribeYourIdeaRoute = DescribeYourIdeaRouteImport.update({
@@ -45,6 +51,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
   '/describe-your-idea': typeof DescribeYourIdeaRoute
+  '/services': typeof ServicesRoute
   '/start-project': typeof StartProjectRoute
   '/admin/': typeof AdminIndexRoute
 }
@@ -52,6 +59,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
   '/describe-your-idea': typeof DescribeYourIdeaRoute
+  '/services': typeof ServicesRoute
   '/start-project': typeof StartProjectRoute
   '/admin': typeof AdminIndexRoute
 }
@@ -60,6 +68,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
   '/describe-your-idea': typeof DescribeYourIdeaRoute
+  '/services': typeof ServicesRoute
   '/start-project': typeof StartProjectRoute
   '/admin/': typeof AdminIndexRoute
 }
@@ -69,15 +78,23 @@ export interface FileRouteTypes {
     | '/'
     | '/contact'
     | '/describe-your-idea'
+    | '/services'
     | '/start-project'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/contact' | '/describe-your-idea' | '/start-project' | '/admin'
+  to:
+    | '/'
+    | '/contact'
+    | '/describe-your-idea'
+    | '/services'
+    | '/start-project'
+    | '/admin'
   id:
     | '__root__'
     | '/'
     | '/contact'
     | '/describe-your-idea'
+    | '/services'
     | '/start-project'
     | '/admin/'
   fileRoutesById: FileRoutesById
@@ -86,6 +103,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ContactRoute: typeof ContactRoute
   DescribeYourIdeaRoute: typeof DescribeYourIdeaRoute
+  ServicesRoute: typeof ServicesRoute
   StartProjectRoute: typeof StartProjectRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
@@ -97,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/start-project'
       fullPath: '/start-project'
       preLoaderRoute: typeof StartProjectRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/describe-your-idea': {
@@ -134,6 +159,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ContactRoute: ContactRoute,
   DescribeYourIdeaRoute: DescribeYourIdeaRoute,
+  ServicesRoute: ServicesRoute,
   StartProjectRoute: StartProjectRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
