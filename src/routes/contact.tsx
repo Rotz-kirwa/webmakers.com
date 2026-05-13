@@ -254,7 +254,7 @@ function Contact() {
               </Button>
             </form>
 
-            <div className="self-center">
+            <div className="self-center lg:pl-8 xl:pl-12">
               <span className="eyebrow">Contact WebMakers</span>
               <h1 className="mt-6 text-4xl font-extrabold leading-tight sm:text-5xl">
                 Tell Us What You Want Your Website To Do
