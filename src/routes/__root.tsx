@@ -4,12 +4,15 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useLocation,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
 import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
 
 import appCss from "../styles.css?url";
+
+const brandIconUrl = "https://i.pinimg.com/736x/81/40/98/8140989107d15a1f470898d319e2e112.jpg";
 
 function NotFoundComponent() {
   return (
@@ -73,16 +76,32 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "WebMakers — Premium Websites for Every Business" },
+      {
+        name: "description",
+        content:
+          "WebMakers builds premium websites, e-commerce stores, booking systems, dashboards, and business platforms that help brands look professional and get more clients.",
+      },
+      { name: "author", content: "WebMakers" },
+      { property: "og:title", content: "WebMakers — Premium Websites for Every Business" },
+      {
+        property: "og:description",
+        content:
+          "Professional website design, admin dashboards, lead capture, payments, bookings, SEO, and digital systems for serious businesses.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "WebMakers — Premium Websites for Every Business" },
+      {
+        name: "twitter:description",
+        content:
+          "Premium websites and digital systems for businesses that want to look serious online.",
+      },
     ],
     links: [
+      { rel: "icon", href: brandIconUrl },
+      { rel: "shortcut icon", href: brandIconUrl },
+      { rel: "apple-touch-icon", href: brandIconUrl },
       {
         rel: "stylesheet",
         href: appCss,
@@ -111,11 +130,13 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
 
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
-      <WhatsAppFloat />
+      {isAdminRoute ? null : <WhatsAppFloat />}
     </QueryClientProvider>
   );
 }

@@ -1,4 +1,4 @@
-import { type ReactNode, useMemo, useState } from "react";
+import { type ReactNode, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowRight,
@@ -16,8 +16,7 @@ import { Header } from "@/components/site/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
-const phoneNumber = "254791260817";
+import { adminApi } from "@/admin/api";
 
 const websiteTypes = [
   "Business website",
@@ -34,6 +33,7 @@ const budgetRanges = [
   "KSh 15,000 - 30,000",
   "KSh 30,000 - 50,000",
   "KSh 50,000+",
+  "Enterprise: KSh 100,000 - 200,000",
   "I need guidance",
 ];
 
@@ -67,6 +67,9 @@ export const Route = createFileRoute("/contact")({
 });
 
 function Contact() {
+  const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -77,25 +80,64 @@ function Contact() {
     message: "",
   });
 
-  const whatsappHref = useMemo(() => {
-    const message = [
-      "Hello WebMakers, I would like to start a website project.",
-      "",
-      `Name: ${form.name || "-"}`,
-      `Phone: ${form.phone || "-"}`,
-      `Email: ${form.email || "-"}`,
-      `Business: ${form.business || "-"}`,
-      `Website type: ${form.websiteType}`,
-      `Budget: ${form.budget}`,
-      "",
-      `Project details: ${form.message || "-"}`,
-    ].join("\n");
-
-    return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-  }, [form]);
-
   function updateField(field: keyof typeof form, value: string) {
     setForm((current) => ({ ...current, [field]: value }));
+  }
+
+  async function handleSubmit() {
+    const now = new Date();
+    const business = form.business.trim() || "Unnamed business";
+    const messageText = form.message.trim() || "No project details added.";
+
+    setIsSubmitting(true);
+    setSubmitError("");
+    try {
+      await adminApi.submitPublic({
+        lead: {
+          name: form.name.trim() || "Website visitor",
+          business,
+          phone: form.phone.trim(),
+          email: form.email.trim() || "not provided",
+          serviceType: form.websiteType,
+          packageInterest: form.budget.includes("15,000")
+            ? "Starter Website"
+            : form.budget.includes("30,000")
+              ? "Business Website"
+              : form.budget.includes("100,000")
+                ? "Enterprise Website"
+                : "Premium Website",
+          budget: form.budget,
+          source: "Contact form",
+          status: "New",
+          followUp: "Today",
+          lastMessage: messageText,
+          notes: [`Submitted from public contact page on ${now.toLocaleString()}`],
+        },
+        message: {
+          name: form.name.trim() || "Website visitor",
+          phone: form.phone.trim(),
+          email: form.email.trim(),
+          subject: `${form.websiteType} inquiry from ${business}`,
+          body: messageText,
+          channel: "Contact form",
+          status: "Unread",
+        },
+      });
+      setSubmitted(true);
+      setForm({
+        name: "",
+        phone: "",
+        email: "",
+        business: "",
+        websiteType: websiteTypes[0],
+        budget: budgetRanges[0],
+        message: "",
+      });
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Could not submit your project.");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -136,15 +178,27 @@ function Contact() {
               className="card-elevated p-6 sm:p-8"
               onSubmit={(event) => {
                 event.preventDefault();
-                window.location.href = whatsappHref;
+                handleSubmit();
               }}
             >
               <div>
                 <h2 className="text-2xl font-bold">Start Your Project</h2>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Fill this in and send it directly to our WhatsApp.
+                  Fill this in and it will go directly to the WebMakers admin dashboard.
                 </p>
               </div>
+
+              {submitted ? (
+                <div className="mt-5 border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold leading-relaxed text-emerald-800">
+                  Your project details have been received. The WebMakers team can now review them in
+                  the admin dashboard.
+                </div>
+              ) : null}
+              {submitError ? (
+                <div className="mt-5 border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold leading-relaxed text-red-700">
+                  {submitError}
+                </div>
+              ) : null}
 
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 <Field label="Your name">
@@ -215,8 +269,12 @@ function Contact() {
                 />
               </Field>
 
-              <Button type="submit" className="mt-6 h-12 w-full rounded-xl text-base">
-                Send Project Details <Send className="h-4 w-4" />
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="mt-6 h-12 w-full rounded-xl text-base"
+              >
+                {isSubmitting ? "Sending..." : "Send Project Details"} <Send className="h-4 w-4" />
               </Button>
             </form>
           </div>
@@ -232,7 +290,7 @@ function Contact() {
             <InfoPanel
               icon={MessageCircle}
               title="Send content easily"
-              text="Share your logo, photos, services, prices, and business details through WhatsApp or email."
+              text="Share your logo, photos, services, prices, and business details through the project form or email."
             />
             <InfoPanel
               icon={ArrowRight}

@@ -1,34 +1,41 @@
-import { type ReactNode, useMemo, useState } from "react";
+import { type ReactNode, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowLeft,
   ArrowRight,
   BarChart3,
+  BellRing,
   Bot,
+  Boxes,
   Building2,
+  Calculator,
+  CalendarDays,
   Check,
-  CheckCircle2,
   Clock3,
   CreditCard,
   Crown,
   Database,
+  Gamepad2,
   GraduationCap,
   Headphones,
   Home,
   Landmark,
   LayoutDashboard,
   LineChart,
-  Lock,
+  Mail,
+  MapPin,
+  Megaphone,
   MessageCircle,
   PackageCheck,
-  Palette,
   Plane,
+  Receipt,
   Rocket,
   Search,
   Send,
   ShieldCheck,
   ShoppingBag,
+  Smartphone,
   Sparkles,
   Store,
   Truck,
@@ -36,6 +43,7 @@ import {
   UserRound,
   Users,
   Wallet,
+  Workflow,
 } from "lucide-react";
 
 import { Footer } from "@/components/site/Footer";
@@ -43,8 +51,7 @@ import { Header } from "@/components/site/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-
-const phoneNumber = "254791260817";
+import { adminApi } from "@/admin/api";
 
 const projectTypes = [
   {
@@ -102,24 +109,51 @@ const projectTypes = [
     gradient: "linear-gradient(135deg,#1d4ed8,#4f46e5)",
   },
   {
+    name: "Aviator / Crash Games",
+    desc: "Real-time game UI, wallets, admin controls, rounds, and player dashboards.",
+    icon: Gamepad2,
+    gradient: "linear-gradient(135deg,#ef3525,#7c2d12)",
+  },
+  {
     name: "Custom System",
     desc: "Automation, admin panels, workflows, APIs, and operations.",
     icon: Database,
     gradient: "linear-gradient(135deg,#020617,#475569)",
   },
+  {
+    name: "Other / Not Listed",
+    desc: "Choose this if your project type is different. You can describe it in detail later.",
+    icon: Sparkles,
+    gradient: "linear-gradient(135deg,#475569,#1d4ed8)",
+  },
 ];
 
 const featureOptions = [
   { name: "M-Pesa Integration", icon: Wallet },
+  { name: "Card Payment Integration", icon: CreditCard },
   { name: "Booking System", icon: Clock3 },
+  { name: "Calendar Scheduling", icon: CalendarDays },
   { name: "AI Chatbot", icon: Bot },
   { name: "Admin Dashboard", icon: LayoutDashboard },
+  { name: "Admin System for Payments & Analytics", icon: CreditCard },
   { name: "Analytics", icon: BarChart3 },
+  { name: "Sales Reports", icon: LineChart },
   { name: "Live Chat", icon: MessageCircle },
   { name: "E-commerce", icon: ShoppingBag },
+  { name: "Inventory Management", icon: Boxes },
+  { name: "Order Management", icon: Receipt },
   { name: "User Accounts", icon: Users },
+  { name: "Customer Dashboard", icon: UserRound },
   { name: "SMS Notifications", icon: Headphones },
+  { name: "Email Notifications", icon: Mail },
+  { name: "Push Notifications", icon: BellRing },
   { name: "SEO Optimization", icon: Search },
+  { name: "Google Maps Integration", icon: MapPin },
+  { name: "Mobile App / PWA", icon: Smartphone },
+  { name: "Marketing Campaign Pages", icon: Megaphone },
+  { name: "Delivery / Tracking System", icon: Truck },
+  { name: "Loan / Price Calculator", icon: Calculator },
+  { name: "Workflow Automation", icon: Workflow },
   { name: "Security Hardening", icon: ShieldCheck },
   { name: "CRM / API Integration", icon: PackageCheck },
 ];
@@ -153,7 +187,7 @@ const budgetOptions = [
   },
   {
     name: "Enterprise",
-    price: "KSh 100k+",
+    price: "KSh 100k - 200k",
     desc: "Automation, dashboards, integrations, and scalable systems.",
   },
   {
@@ -216,6 +250,9 @@ export const Route = createFileRoute("/describe-your-idea")({
 
 function DescribeYourIdea() {
   const [activeStep, setActiveStep] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState<FormState>({
     businessName: "",
     industry: "",
@@ -234,36 +271,6 @@ function DescribeYourIdea() {
   });
 
   const progress = ((activeStep + 1) / steps.length) * 100;
-
-  const whatsappHref = useMemo(() => {
-    const message = [
-      "Hello WebMakers, I want a custom website quote and strategy.",
-      "",
-      "BUSINESS",
-      `Business name: ${form.businessName || "-"}`,
-      `Industry: ${form.industry || "-"}`,
-      `Phone: ${form.phone || "-"}`,
-      `Email: ${form.email || "-"}`,
-      "",
-      "PROJECT",
-      `Website type: ${form.projectType}`,
-      `Features: ${form.selectedFeatures.join(", ") || "-"}`,
-      `Design style: ${form.designStyle}`,
-      `Budget: ${form.budget}`,
-      `Timeline: ${form.timeline}`,
-      "",
-      "VISION",
-      `Idea: ${form.idea || "-"}`,
-      `Goals: ${form.goals || "-"}`,
-      `Reference links: ${form.references || "-"}`,
-      `Inspiration files selected: ${form.inspirationFiles || "-"}`,
-      `Logo files selected: ${form.logoFiles || "-"}`,
-      "",
-      "Please review this and send me a quotation plus website strategy.",
-    ].join("\n");
-
-    return `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-  }, [form]);
 
   function updateField<K extends keyof FormState>(field: K, value: FormState[K]) {
     setForm((current) => ({ ...current, [field]: value }));
@@ -286,57 +293,58 @@ function DescribeYourIdea() {
     setActiveStep((current) => Math.max(current - 1, 0));
   }
 
+  async function handleSubmit() {
+    const now = new Date();
+    const business = form.businessName.trim() || "Unnamed business";
+    const idea = form.idea.trim() || "No vision details added.";
+
+    setIsSubmitting(true);
+    setSubmitError("");
+    try {
+      await adminApi.submitPublic({
+        lead: {
+          name: business,
+          business,
+          phone: form.phone.trim() || "not provided",
+          email: form.email.trim() || "not provided",
+          serviceType: form.projectType,
+          packageInterest: form.budget,
+          budget: form.budget,
+          source: "Project planner",
+          status: "New",
+          followUp: "Today",
+          lastMessage: `${idea} Goals: ${form.goals.trim() || "Not specified"}`,
+          notes: [
+            `Industry: ${form.industry || "Not specified"}`,
+            `Features: ${form.selectedFeatures.join(", ") || "None selected"}`,
+            `Style: ${form.designStyle}. Timeline: ${form.timeline}. Submitted ${now.toLocaleString()}`,
+          ],
+        },
+        message: {
+          name: business,
+          phone: form.phone.trim(),
+          email: form.email.trim(),
+          subject: `${form.projectType} project planner submission`,
+          body: `${idea}\n\nGoals: ${form.goals.trim() || "Not specified"}`,
+          channel: "Project planner",
+          status: "Unread",
+        },
+      });
+      setSubmitted(true);
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error ? error.message : "Could not submit your project brief.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-[#f6f8fb] text-navy">
       <Header />
       <main>
-        <section className="relative overflow-hidden bg-[#050b17]">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_16%_20%,rgba(239,53,37,0.3),transparent_28%),radial-gradient(circle_at_76%_12%,rgba(29,78,216,0.38),transparent_30%),radial-gradient(circle_at_58%_78%,rgba(239,53,37,0.12),transparent_28%),linear-gradient(135deg,#050b17,#0b1325_54%,#101827)]" />
-          <div className="absolute inset-0 grid-bg opacity-20" />
-          <div className="absolute left-1/2 top-10 h-72 w-72 -translate-x-1/2 rounded-full bg-white/10 blur-3xl" />
-
-          <div className="container-x relative grid gap-10 pb-16 pt-10 lg:grid-cols-[0.95fr_1.05fr] lg:pb-20 lg:pt-14">
-            <div className="self-center">
-              <div className="inline-flex items-center gap-2 border border-white/18 bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-white shadow-soft backdrop-blur">
-                <Sparkles className="h-3.5 w-3.5 text-gold" /> Premium project discovery
-              </div>
-              <h1 className="mt-6 max-w-4xl text-4xl font-extrabold leading-[1.03] text-white sm:text-5xl lg:text-6xl">
-                Turn Your Vision Into a Website People Instantly Trust
-              </h1>
-              <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/76 sm:text-lg">
-                Describe your business, ideal website, features, style, budget, and goals. We
-                analyze your vision, shape the strategy, send a quotation, then build it with a
-                polished agency-level process.
-              </p>
-
-              <div className="mt-8 flex flex-wrap gap-3">
-                {[
-                  "Custom built for your business",
-                  "Strategy before design",
-                  "Quote after review",
-                ].map((label) => (
-                  <span
-                    key={label}
-                    className="inline-flex items-center gap-2 border border-white/14 bg-white/9 px-4 py-2 text-sm font-bold text-white/88 backdrop-blur"
-                  >
-                    <CheckCircle2 className="h-4 w-4 text-gold" /> {label}
-                  </span>
-                ))}
-              </div>
-
-              <div className="mt-10 grid max-w-2xl grid-cols-3 gap-3">
-                <Metric value="24/7" label="digital presence" />
-                <Metric value="4.9/5" label="client rating" />
-                <Metric value="1 min" label="fast response" />
-              </div>
-            </div>
-
-            <HeroMockup />
-          </div>
-        </section>
-
         <section className="relative overflow-hidden py-16 sm:py-20">
-          <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-[#050b17] to-transparent opacity-8" />
           <div className="container-x relative">
             <div className="mx-auto max-w-3xl text-center">
               <span className="eyebrow">Project planner</span>
@@ -353,7 +361,7 @@ function DescribeYourIdea() {
               className="mt-10 overflow-hidden border border-white/70 bg-white/80 shadow-[0_40px_100px_-45px_rgba(15,23,42,0.45)] backdrop-blur-xl"
               onSubmit={(event) => {
                 event.preventDefault();
-                window.location.href = whatsappHref;
+                handleSubmit();
               }}
             >
               <div className="grid min-h-[680px] lg:grid-cols-[18rem_1fr]">
@@ -421,7 +429,9 @@ function DescribeYourIdea() {
                       <VisionStep
                         form={form}
                         updateField={updateField}
-                        whatsappHref={whatsappHref}
+                        submitted={submitted}
+                        submitError={submitError}
+                        isSubmitting={isSubmitting}
                       />
                     ) : null}
                   </div>
@@ -447,9 +457,11 @@ function DescribeYourIdea() {
                     ) : (
                       <Button
                         type="submit"
+                        disabled={isSubmitting}
                         className="h-11 rounded-xl bg-[linear-gradient(135deg,var(--gold),var(--royal))] px-6 font-black text-white hover:brightness-105"
                       >
-                        Submit Project <Send className="h-4 w-4" />
+                        {isSubmitting ? "Submitting..." : "Submit Project"}{" "}
+                        <Send className="h-4 w-4" />
                       </Button>
                     )}
                   </div>
@@ -487,52 +499,6 @@ function DescribeYourIdea() {
         </section>
       </main>
       <Footer />
-    </div>
-  );
-}
-
-function HeroMockup() {
-  return (
-    <div className="relative min-h-[430px] self-center">
-      <div className="absolute inset-x-8 top-8 h-72 rotate-2 border border-white/14 bg-white/8 shadow-[0_40px_100px_-40px_rgba(0,0,0,0.8)] backdrop-blur-xl" />
-      <div className="absolute inset-x-0 top-0 border border-white/16 bg-white/12 p-5 shadow-[0_36px_90px_-38px_rgba(0,0,0,0.9)] backdrop-blur-2xl">
-        <div className="flex items-center justify-between border-b border-white/12 pb-4">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.16em] text-gold">
-              Strategy console
-            </p>
-            <p className="mt-1 text-lg font-black text-white">Website blueprint</p>
-          </div>
-          <span className="rounded-full bg-emerald-400/16 px-3 py-1 text-xs font-bold text-emerald-200">
-            Live review
-          </span>
-        </div>
-        <div className="mt-5 grid gap-3">
-          <MockupRow label="Brand trust" value="92%" color="#ef3525" />
-          <MockupRow label="Conversion paths" value="8 flows" color="#38bdf8" />
-          <MockupRow label="Automation ideas" value="12" color="#ef3525" />
-        </div>
-        <div className="mt-5 grid grid-cols-3 gap-3">
-          {[
-            ["Quote", "Ready"],
-            ["Pages", "Mapped"],
-            ["Launch", "Planned"],
-          ].map(([label, value]) => (
-            <div key={label} className="border border-white/12 bg-black/18 p-4">
-              <p className="text-xs text-white/52">{label}</p>
-              <p className="mt-2 text-sm font-black text-white">{value}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-      <div className="absolute bottom-3 left-3 border border-white/14 bg-white/10 p-4 text-white shadow-soft backdrop-blur-xl">
-        <Palette className="h-5 w-5 text-gold" />
-        <p className="mt-2 text-sm font-bold">Premium UI direction</p>
-      </div>
-      <div className="absolute bottom-16 right-0 border border-white/14 bg-white/10 p-4 text-white shadow-soft backdrop-blur-xl">
-        <Lock className="h-5 w-5 text-emerald-300" />
-        <p className="mt-2 text-sm font-bold">Secure build plan</p>
-      </div>
     </div>
   );
 }
@@ -757,11 +723,15 @@ function BudgetStep({
 function VisionStep({
   form,
   updateField,
-  whatsappHref,
+  submitted,
+  submitError,
+  isSubmitting,
 }: {
   form: FormState;
   updateField: <K extends keyof FormState>(field: K, value: FormState[K]) => void;
-  whatsappHref: string;
+  submitted: boolean;
+  submitError: string;
+  isSubmitting: boolean;
 }) {
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_20rem]">
@@ -784,9 +754,19 @@ function VisionStep({
           />
         </Field>
         <p className="border border-amber-200 bg-amber-50 px-4 py-3 text-xs font-semibold leading-relaxed text-amber-900">
-          When you submit, WhatsApp opens with your full brief. If you selected files, attach them
-          directly in the chat so we can review everything together.
+          When you submit, your full brief goes directly into the WebMakers admin dashboard for
+          review and follow-up.
         </p>
+        {submitted ? (
+          <p className="border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-bold leading-relaxed text-emerald-800">
+            Your project brief has been received in the admin dashboard.
+          </p>
+        ) : null}
+        {submitError ? (
+          <p className="border border-red-200 bg-red-50 px-4 py-3 text-sm font-bold leading-relaxed text-red-700">
+            {submitError}
+          </p>
+        ) : null}
       </div>
       <div className="border border-slate-200 bg-[#07111f] p-5 text-white">
         <p className="text-xs font-black uppercase tracking-[0.16em] text-gold">Brief summary</p>
@@ -795,14 +775,13 @@ function VisionStep({
         <SummaryItem label="Style" value={form.designStyle} />
         <SummaryItem label="Budget" value={form.budget} />
         <SummaryItem label="Timeline" value={form.timeline} />
-        <a
-          href={whatsappHref}
-          target="_blank"
-          rel="noreferrer"
+        <button
+          type="submit"
+          disabled={isSubmitting}
           className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[linear-gradient(135deg,var(--gold),var(--royal))] px-5 py-3 text-sm font-black text-white transition hover:-translate-y-1 hover:brightness-105"
         >
-          Get Custom Quote <Send className="h-4 w-4" />
-        </a>
+          {isSubmitting ? "Sending..." : "Send Brief to Admin"} <Send className="h-4 w-4" />
+        </button>
       </div>
     </div>
   );
@@ -938,29 +917,6 @@ function UploadField({
         {value || "Images, PDFs, screenshots, or brand files"}
       </span>
     </label>
-  );
-}
-
-function Metric({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="border border-white/14 bg-white/9 p-4 text-white backdrop-blur">
-      <p className="text-2xl font-black">{value}</p>
-      <p className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-white/56">{label}</p>
-    </div>
-  );
-}
-
-function MockupRow({ label, value, color }: { label: string; value: string; color: string }) {
-  return (
-    <div className="grid grid-cols-[1fr_auto] items-center gap-4 border border-white/10 bg-black/18 p-4">
-      <div>
-        <p className="text-sm font-bold text-white">{label}</p>
-        <div className="mt-3 h-2 overflow-hidden rounded-full bg-white/10">
-          <div className="h-full rounded-full" style={{ width: "78%", background: color }} />
-        </div>
-      </div>
-      <p className="text-sm font-black text-white">{value}</p>
-    </div>
   );
 }
 

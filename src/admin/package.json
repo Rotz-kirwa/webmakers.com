@@ -1,0 +1,14 @@
+{
+  "name": "webmakers-admin",
+  "private": true,
+  "scripts": {
+    "dev": "cd ../.. && npm run frontend:dev -- --host 0.0.0.0 --open /admin",
+    "dev:full": "cd ../.. && npm run dev -- --host 0.0.0.0 --open /admin",
+    "backend:dev": "cd ../.. && npm run backend:dev",
+    "db:migrate": "cd ../.. && npm run db:migrate",
+    "db:seed": "cd ../.. && npm run db:seed",
+    "db:setup": "cd ../.. && npm run db:setup",
+    "build": "cd ../.. && npm run build",
+    "lint": "cd ../.. && npm run lint"
+  }
+}

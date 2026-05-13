@@ -284,3 +284,18 @@
 .animate-fade-up {
   animation: fade-up 0.7s ease-out both;
 }
+
+@keyframes testimonial-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.animate-testimonial-marquee {
+  animation: testimonial-marquee 38s linear infinite;
+}
+.animate-testimonial-marquee:hover {
+  animation-play-state: paused;
+}
