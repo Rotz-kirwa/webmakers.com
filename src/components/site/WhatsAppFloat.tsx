@@ -1,7 +1,7 @@
 import { MessageCircle, X } from "lucide-react";
 import { useState } from "react";
 
-const phoneNumber = "254791260817";
+const phoneNumber = "254747096321";
 const defaultMessage =
   "Hi WebMakers, I want a professional website for my business. Please help me get started.";
 const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(defaultMessage)}`;

@@ -269,7 +269,7 @@ function Contact() {
               </p>
 
               <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                <ContactCard icon={Phone} label="Call" value="0791 260 817" />
+                <ContactCard icon={Phone} label="Call" value="+254 747 096321" />
                 <ContactCard icon={Mail} label="Email" value="hello@webmakers.com" />
                 <ContactCard icon={Clock} label="Response time" value="Within 1 minute" />
                 <ContactCard icon={MapPin} label="Location" value="Nairobi, Kenya & remotely" />

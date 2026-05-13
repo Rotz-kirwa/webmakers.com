@@ -30,7 +30,7 @@ export function CTASection() {
             Start My Website <ArrowRight className="h-4 w-4" />
           </a>
           <a
-            href="https://wa.me/254791260817"
+            href="https://wa.me/254747096321"
             target="_blank"
             rel="noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/40 bg-white/10 px-6 py-3 font-semibold text-white backdrop-blur transition hover:bg-white/20"

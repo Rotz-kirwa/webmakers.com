@@ -54,7 +54,7 @@ export function Footer() {
           <h4 className="text-sm font-bold uppercase tracking-wider text-navy">Contact</h4>
           <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
             <li className="flex items-center gap-2">
-              <Phone className="h-4 w-4" style={{ color: "var(--royal)" }} /> 0791 260 817
+              <Phone className="h-4 w-4" style={{ color: "var(--royal)" }} /> +254 747 096321
             </li>
             <li className="flex items-center gap-2">
               <Mail className="h-4 w-4" style={{ color: "var(--gold)" }} /> hello@webmakers.com
