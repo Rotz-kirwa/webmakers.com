@@ -150,116 +150,120 @@ function Contact() {
         >
           <div className="absolute inset-0 grid-bg opacity-60" />
           <div className="container-x relative grid gap-12 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
-            <form
-              className="card-elevated p-6 sm:p-8"
-              onSubmit={(event) => {
-                event.preventDefault();
-                handleSubmit();
-              }}
-            >
-              <div>
-                <h2 className="text-2xl font-bold">Start Your Project</h2>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Fill this in and it will go directly to the WebMakers admin dashboard.
-                </p>
-              </div>
-
-              {submitted ? (
-                <div className="mt-5 border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold leading-relaxed text-emerald-800">
-                  Your project details have been received. The WebMakers team can now review them in
-                  the admin dashboard.
-                </div>
-              ) : null}
-              {submitError ? (
-                <div className="mt-5 border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold leading-relaxed text-red-700">
-                  {submitError}
-                </div>
-              ) : null}
-
-              <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                <Field label="Your name">
-                  <Input
-                    required
-                    value={form.name}
-                    onChange={(event) => updateField("name", event.target.value)}
-                    placeholder="algoking doe"
-                    className="h-11 bg-white"
-                  />
-                </Field>
-                <Field label="Phone number">
-                  <Input
-                    required
-                    value={form.phone}
-                    onChange={(event) => updateField("phone", event.target.value)}
-                    placeholder="+254..."
-                    className="h-11 bg-white"
-                  />
-                </Field>
-                <Field label="Email address">
-                  <Input
-                    type="email"
-                    value={form.email}
-                    onChange={(event) => updateField("email", event.target.value)}
-                    placeholder="you@example.com"
-                    className="h-11 bg-white"
-                  />
-                </Field>
-                <Field label="Business name">
-                  <Input
-                    value={form.business}
-                    onChange={(event) => updateField("business", event.target.value)}
-                    placeholder="Your business"
-                    className="h-11 bg-white"
-                  />
-                </Field>
-                <Field label="Website type">
-                  <select
-                    value={form.websiteType}
-                    onChange={(event) => updateField("websiteType", event.target.value)}
-                    className="h-11 w-full rounded-md border border-input bg-white px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                  >
-                    {websiteTypes.map((type) => (
-                      <option key={type}>{type}</option>
-                    ))}
-                  </select>
-                </Field>
-                <Field label="Budget range">
-                  <select
-                    value={form.budget}
-                    onChange={(event) => updateField("budget", event.target.value)}
-                    className="h-11 w-full rounded-md border border-input bg-white px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                  >
-                    {budgetRanges.map((range) => (
-                      <option key={range}>{range}</option>
-                    ))}
-                  </select>
-                </Field>
-              </div>
-
-              <Field label="Project details" className="mt-4">
-                <Textarea
-                  value={form.message}
-                  onChange={(event) => updateField("message", event.target.value)}
-                  placeholder="Tell us what pages, features, or goals you have in mind."
-                  className="min-h-32 resize-none bg-white"
-                />
-              </Field>
-
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="mt-6 h-12 w-full rounded-xl text-base"
-              >
-                {isSubmitting ? "Sending..." : "Send Project Details"} <Send className="h-4 w-4" />
-              </Button>
-            </form>
-
-            <div className="self-center lg:pl-8 xl:pl-12">
+            <div>
               <span className="eyebrow">Contact WebMakers</span>
               <h1 className="mt-6 text-4xl font-extrabold leading-tight sm:text-5xl">
                 Tell Us What You Want Your Website To Do
               </h1>
-              <p className="mt-5 max-w-xl text-lg text-muted-foreground">
+
+              <form
+                className="card-elevated mt-8 p-6 sm:p-8"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  handleSubmit();
+                }}
+              >
+                <div>
+                  <h2 className="text-2xl font-bold">Start Your Project</h2>
+                  <p className="mt-2 text-sm text-muted-foreground">
+                    Fill this in and it will go directly to the WebMakers admin dashboard.
+                  </p>
+                </div>
+
+                {submitted ? (
+                  <div className="mt-5 border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold leading-relaxed text-emerald-800">
+                    Your project details have been received. The WebMakers team can now review them
+                    in the admin dashboard.
+                  </div>
+                ) : null}
+                {submitError ? (
+                  <div className="mt-5 border border-red-200 bg-red-50 px-4 py-3 text-sm font-semibold leading-relaxed text-red-700">
+                    {submitError}
+                  </div>
+                ) : null}
+
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  <Field label="Your name">
+                    <Input
+                      required
+                      value={form.name}
+                      onChange={(event) => updateField("name", event.target.value)}
+                      placeholder="algoking doe"
+                      className="h-11 bg-white"
+                    />
+                  </Field>
+                  <Field label="Phone number">
+                    <Input
+                      required
+                      value={form.phone}
+                      onChange={(event) => updateField("phone", event.target.value)}
+                      placeholder="+254..."
+                      className="h-11 bg-white"
+                    />
+                  </Field>
+                  <Field label="Email address">
+                    <Input
+                      type="email"
+                      value={form.email}
+                      onChange={(event) => updateField("email", event.target.value)}
+                      placeholder="you@example.com"
+                      className="h-11 bg-white"
+                    />
+                  </Field>
+                  <Field label="Business name">
+                    <Input
+                      value={form.business}
+                      onChange={(event) => updateField("business", event.target.value)}
+                      placeholder="Your business"
+                      className="h-11 bg-white"
+                    />
+                  </Field>
+                  <Field label="Website type">
+                    <select
+                      value={form.websiteType}
+                      onChange={(event) => updateField("websiteType", event.target.value)}
+                      className="h-11 w-full rounded-md border border-input bg-white px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    >
+                      {websiteTypes.map((type) => (
+                        <option key={type}>{type}</option>
+                      ))}
+                    </select>
+                  </Field>
+                  <Field label="Budget range">
+                    <select
+                      value={form.budget}
+                      onChange={(event) => updateField("budget", event.target.value)}
+                      className="h-11 w-full rounded-md border border-input bg-white px-3 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    >
+                      {budgetRanges.map((range) => (
+                        <option key={range}>{range}</option>
+                      ))}
+                    </select>
+                  </Field>
+                </div>
+
+                <Field label="Project details" className="mt-4">
+                  <Textarea
+                    value={form.message}
+                    onChange={(event) => updateField("message", event.target.value)}
+                    placeholder="Tell us what pages, features, or goals you have in mind."
+                    className="min-h-32 resize-none bg-white"
+                  />
+                </Field>
+
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="mt-6 h-12 w-full rounded-xl text-base"
+                >
+                  {isSubmitting ? "Sending..." : "Send Project Details"}{" "}
+                  <Send className="h-4 w-4" />
+                </Button>
+              </form>
+            </div>
+
+            <div className="self-center lg:pl-8 xl:pl-12">
+              <p className="max-w-xl text-lg text-muted-foreground">
                 Share a few details about your business and we will help you choose the right
                 package, features, and launch plan.
               </p>
