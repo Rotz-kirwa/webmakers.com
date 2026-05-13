@@ -149,31 +149,7 @@ function Contact() {
           style={{ background: "var(--gradient-hero)" }}
         >
           <div className="absolute inset-0 grid-bg opacity-60" />
-          <div className="container-x relative grid gap-12 py-16 lg:grid-cols-[0.9fr_1.1fr] lg:py-24">
-            <div className="self-center">
-              <span className="eyebrow">Contact WebMakers</span>
-              <h1 className="mt-6 text-4xl font-extrabold leading-tight sm:text-5xl">
-                Tell Us What You Want Your Website To Do
-              </h1>
-              <p className="mt-5 max-w-xl text-lg text-muted-foreground">
-                Share a few details about your business and we will help you choose the right
-                package, features, and launch plan.
-              </p>
-
-              <div className="mt-8 grid gap-4 sm:grid-cols-2">
-                <ContactCard icon={Phone} label="Call" value="0791 260 817" />
-                <ContactCard icon={Mail} label="Email" value="hello@webmakers.com" />
-                <ContactCard icon={Clock} label="Response time" value="Within 1 minute" />
-                <ContactCard icon={MapPin} label="Location" value="Nairobi, Kenya & remotely" />
-              </div>
-
-              <div className="mt-8 flex flex-wrap gap-3">
-                <a href="mailto:hello@webmakers.com" className="btn-ghost">
-                  Email Us <ArrowRight className="h-4 w-4" />
-                </a>
-              </div>
-            </div>
-
+          <div className="container-x relative grid gap-12 py-16 lg:grid-cols-[1.1fr_0.9fr] lg:py-24">
             <form
               className="card-elevated p-6 sm:p-8"
               onSubmit={(event) => {
@@ -277,6 +253,30 @@ function Contact() {
                 {isSubmitting ? "Sending..." : "Send Project Details"} <Send className="h-4 w-4" />
               </Button>
             </form>
+
+            <div className="self-center">
+              <span className="eyebrow">Contact WebMakers</span>
+              <h1 className="mt-6 text-4xl font-extrabold leading-tight sm:text-5xl">
+                Tell Us What You Want Your Website To Do
+              </h1>
+              <p className="mt-5 max-w-xl text-lg text-muted-foreground">
+                Share a few details about your business and we will help you choose the right
+                package, features, and launch plan.
+              </p>
+
+              <div className="mt-8 grid gap-4 sm:grid-cols-2">
+                <ContactCard icon={Phone} label="Call" value="0791 260 817" />
+                <ContactCard icon={Mail} label="Email" value="hello@webmakers.com" />
+                <ContactCard icon={Clock} label="Response time" value="Within 1 minute" />
+                <ContactCard icon={MapPin} label="Location" value="Nairobi, Kenya & remotely" />
+              </div>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a href="mailto:hello@webmakers.com" className="btn-ghost">
+                  Email Us <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
+            </div>
           </div>
         </section>
 
