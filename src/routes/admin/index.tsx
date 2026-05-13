@@ -97,7 +97,8 @@ type StoredMediaAsset = MediaAsset & { id?: string };
 
 const metricIcons = [Users, Bell, PackageCheck, MessageSquare];
 const adminDefaultEmail = "eliudkirwa451@gmail.com";
-const adminIconUrl = "https://i.pinimg.com/736x/a5/04/f4/a504f4ad40f48fb0d974d4c2bad25b68.jpg";
+const adminIconUrl =
+  "https://i.pinimg.com/736x/a5/04/f4/a504f4ad40f48fb0d974d4c2bad25b68.jpg?v=admin";
 const defaultHeroDraft = {
   title: "Your Business Should Be Working Online 24/7",
   body: "Do not let customers find your competitors first. WebMakers builds websites that make your business visible, trusted, and ready to receive bookings, orders, inquiries, and payments from anywhere.",
@@ -156,8 +157,8 @@ export const Route = createFileRoute("/admin/")({
       { name: "robots", content: "noindex,nofollow" },
     ],
     links: [
-      { rel: "icon", href: adminIconUrl },
-      { rel: "shortcut icon", href: adminIconUrl },
+      { rel: "icon", href: adminIconUrl, type: "image/jpeg" },
+      { rel: "shortcut icon", href: adminIconUrl, type: "image/jpeg" },
       { rel: "apple-touch-icon", href: adminIconUrl },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
