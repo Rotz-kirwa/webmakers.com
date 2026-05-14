@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+
+Sitemap: https://webmakers.com/sitemap.xml
+
+# Crawl rate
+Crawl-delay: 1
+Request-rate: 1/1s

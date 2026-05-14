@@ -40,26 +40,48 @@ const budgetRanges = [
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact WebMakers — Start Your Website Project" },
+      { title: "Contact WebMakers - Get Your Website Project Started" },
       {
         name: "description",
         content:
-          "Talk to WebMakers about your business website, e-commerce store, booking system, SEO, or website redesign.",
+          "Contact WebMakers today. Talk to our team about your business website, e-commerce store, booking system, SEO, or website redesign. Get a custom quote for your project.",
       },
-      { property: "og:title", content: "Contact WebMakers" },
+      { name: "keywords", content: "contact WebMakers, website inquiry, web design quote, get website built, business website cost, website design consultation" },
+      { property: "og:title", content: "Contact WebMakers - Website Design Inquiry" },
       {
         property: "og:description",
-        content: "Share your project details and get a website plan that fits your business.",
+        content: "Share your project details and get a personalized website plan that fits your business goals and budget.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://webmakers.com/contact" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
+      { rel: "canonical", href: "https://webmakers.com/contact" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          name: "Contact WebMakers",
+          url: "https://webmakers.com/contact",
+          description: "Contact form for website design and development inquiries",
+          mainEntity: {
+            "@type": "LocalBusiness",
+            name: "WebMakers",
+            telephone: "+254-747-096321",
+            email: "hello@webmakers.com",
+            areaServed: "KE",
+          },
+        }),
       },
     ],
   }),

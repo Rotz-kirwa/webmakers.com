@@ -1,5 +1,5 @@
 import { MessageCircle, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const phoneNumber = "254747096321";
 const defaultMessage =
@@ -27,6 +27,14 @@ function WhatsAppMark({ className = "h-6 w-6" }: { className?: string }) {
 
 export function WhatsAppFloat() {
   const [isOpen, setIsOpen] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsOpen(true);
+    }, 30000); // 30 seconds
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="fixed bottom-4 right-4 z-[80] flex flex-col items-end gap-2 sm:bottom-5 sm:right-5 sm:gap-3">

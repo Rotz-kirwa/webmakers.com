@@ -39,8 +39,12 @@ const serviceGroups: Array<{
       "Landing pages",
       "Booking websites",
       "Portfolio websites",
+      "Custom websites",
+      "Aviator / crash game websites",
+      "Company / organization websites",
       "School and clinic websites",
       "Restaurant, real estate, salon, travel, and dealership websites",
+      "And many more",
     ],
   },
   {
@@ -245,20 +249,51 @@ const revenuePillars = [
 export const Route = createFileRoute("/services")({
   head: () => ({
     meta: [
-      { title: "WebMakers Services — Websites, Software, AI & Digital Growth" },
+      { title: "Website Design & Development Services | WebMakers" },
       {
         name: "description",
         content:
-          "Explore WebMakers services: website creation, custom business software, AI automation, digital marketing, ecommerce, mobile apps, hosting, SEO, cybersecurity, and consultation.",
+          "Explore WebMakers services: website creation, custom business software, AI automation, digital marketing, ecommerce, mobile apps, hosting, SEO, cybersecurity, and consultation. 12+ service categories for business growth.",
       },
-      { property: "og:title", content: "WebMakers Services" },
+      { name: "keywords", content: "website services, web design services, web development, e-commerce solutions, digital marketing, AI services, booking system, custom software, SEO optimization, business automation" },
+      { property: "og:title", content: "Website Design & Development Services | WebMakers" },
       {
         property: "og:description",
         content:
-          "Websites, software, AI automation, marketing, ecommerce, hosting, SEO, and business systems.",
+          "Websites, software, AI automation, marketing, ecommerce, hosting, SEO, and business systems. All-in-one digital transformation.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://webmakers.com/services" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [
+      { rel: "canonical", href: "https://webmakers.com/services" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ProfessionalService",
+          name: "WebMakers Services",
+          url: "https://webmakers.com/services",
+          description: "Complete web design, development, and digital services",
+          hasOfferingDescription: [
+            "Website Creation Services - Premium business websites, landing pages, booking portals, e-commerce stores",
+            "Custom Software for Business - Enterprise dashboards, CRM systems, booking systems, inventory management",
+            "Digital Marketing - Social media management, Google Ads, SEO optimization, email marketing",
+            "AI Services - AI chatbots, customer support automation, appointment booking, WhatsApp assistants",
+            "Business Automation - Workflow automation, payment processing, staff management tools",
+            "E-Commerce Services - Online stores, payment integration, M-Pesa integration, delivery tracking",
+            "Mobile App Development - Android, iOS, Progressive Web Apps, delivery and booking apps",
+            "Hosting & Maintenance - Website hosting, domain management, monthly maintenance, security monitoring",
+            "Cybersecurity Services - Website security, malware cleanup, SSL setup, backup systems",
+            "Photography & Media - Business photography, product shoots, promo videos, drone footage",
+            "SEO & Visibility Packages - SEO setup, Google indexing, local SEO, search ranking optimization",
+            "Training & Consultation - Tech consultation, digitization strategy, AI adoption, system planning",
+          ],
+        }),
+      },
     ],
   }),
   component: Services,
@@ -269,48 +304,6 @@ function Services() {
     <div className="min-h-screen bg-background">
       <Header />
       <main>
-        <section className="relative overflow-hidden bg-[#07111f] text-white">
-          <div className="absolute inset-0 grid-bg opacity-15" />
-          <div className="container-x relative grid gap-10 py-16 lg:grid-cols-[1fr_0.8fr] lg:items-end lg:py-24">
-            <div>
-              <span className="inline-flex rounded-full border border-white/15 bg-white/8 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-white/72">
-                WebMakers services
-              </span>
-              <h1 className="mt-6 max-w-4xl text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">
-                We help businesses establish, automate, and grow their digital presence.
-              </h1>
-              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/72">
-                WebMakers is more than a website studio. We build websites, software, AI tools,
-                marketing systems, ecommerce platforms, and business automation that help serious
-                businesses move faster.
-              </p>
-            </div>
-            <div className="border border-white/12 bg-white/6 p-6 backdrop-blur">
-              <p className="text-sm font-black uppercase tracking-[0.16em] text-gold">
-                Strongest long-term offers
-              </p>
-              <div className="mt-5 grid gap-3">
-                {[
-                  "SaaS systems",
-                  "Automation",
-                  "AI solutions",
-                  "Marketing retainers",
-                  "Hosting & maintenance",
-                  "Enterprise systems",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-center gap-3 text-sm font-bold text-white/86"
-                  >
-                    <Check className="h-4 w-4 text-gold" />
-                    {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section className="container-x py-16 lg:py-24">
           <div className="max-w-3xl">
             <span className="eyebrow">Full digital transformation</span>
@@ -326,9 +319,8 @@ function Services() {
           </div>
         </section>
 
-        <section className="bg-secondary/70 py-16 lg:py-24">
-          <div className="container-x">
-            <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+        <section className="container-x py-16 lg:py-24">
+          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
               <div>
                 <span className="eyebrow">Smart packages</span>
                 <h2 className="mt-4 text-3xl font-extrabold text-navy sm:text-4xl">
@@ -370,7 +362,6 @@ function Services() {
                 </div>
               </div>
             </div>
-          </div>
         </section>
 
         <section className="container-x py-16 lg:py-24">
@@ -394,10 +385,10 @@ function Services() {
         </section>
 
         <section className="container-x pb-20">
-          <div className="overflow-hidden bg-[#07111f] p-8 text-white sm:p-10 lg:p-12">
+          <div className="overflow-hidden border border-border bg-white p-8 text-navy sm:p-10 lg:p-12">
             <div className="grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
               <div>
-                <span className="text-xs font-black uppercase tracking-[0.18em] text-gold">
+                <span className="text-xs font-black uppercase tracking-[0.18em] text-royal">
                   Ready to grow digitally?
                 </span>
                 <h2 className="mt-4 max-w-3xl text-3xl font-extrabold sm:text-4xl">
@@ -407,7 +398,7 @@ function Services() {
               </div>
               <a
                 href="/describe-your-idea"
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3 font-black text-navy shadow-soft transition hover:-translate-y-1"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-royal px-6 py-3 font-black text-white shadow-soft transition hover:-translate-y-1"
               >
                 Start My Project <ArrowRight className="h-4 w-4" />
               </a>

@@ -221,27 +221,50 @@ type FormState = {
 export const Route = createFileRoute("/describe-your-idea")({
   head: () => ({
     meta: [
-      { title: "Describe Your Idea - Premium Website Project Planner | WebMakers" },
+      { title: "Website Project Planner - Describe Your Idea | WebMakers" },
       {
         name: "description",
         content:
-          "Describe your business, features, design style, budget, and goals. WebMakers will review your vision and send a custom website strategy and quotation.",
+          "Tell us about your business, features, design preferences, budget, and goals. WebMakers will create a custom website strategy and quotation tailored to your needs.",
       },
-      { property: "og:title", content: "Describe Your Idea to WebMakers" },
+      { name: "keywords", content: "website project planner, custom website quote, business website planning, website design process, get website quote, website builder consultation" },
+      { property: "og:title", content: "Website Project Planner - Custom Quote Builder | WebMakers" },
       {
         property: "og:description",
         content:
-          "A premium project discovery experience for custom websites, booking platforms, e-commerce stores, and business systems.",
+          "Interactive project discovery for custom websites, booking platforms, e-commerce stores, and business systems.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://webmakers.com/describe-your-idea" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
+      { rel: "canonical", href: "https://webmakers.com/describe-your-idea" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap",
+      },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          name: "WebMakers Project Planner",
+          url: "https://webmakers.com/describe-your-idea",
+          description: "Interactive website project planning and quotation tool",
+          applicationCategory: "Productivity",
+          offers: {
+            "@type": "AggregateOffer",
+            priceCurrency: "KES",
+            lowPrice: "15000",
+            highPrice: "200000",
+            offerCount: "4",
+          },
+        }),
       },
     ],
   }),
